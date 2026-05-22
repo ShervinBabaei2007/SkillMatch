@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
-const { nanoid } = require("nanoid");
+const crypto = require("crypto");
 const QRCode = require("qrcode");
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const refNum = nanoid(10).toUpperCase();
+    const refNum = crypto.randomBytes(5).toString("hex").toUpperCase();
 
     const qrData = JSON.stringify({
       refNum,
