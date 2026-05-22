@@ -52,7 +52,7 @@ function SkillMatching() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch("http://localhost:3000/api/profile/update", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/profile/update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,39 +1,39 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const INTERESTS = [
-  "Design",
-  "Creativity",
-  "Tech",
-  "Math",
-  "Marketing",
-  "Finance",
-  "Fine Art",
-  "Writing",
-  "Sales",
-  "Teaching",
-  "Coding",
-  "Research",
-  "Fashion",
-  "Hair",
-  "Pottery",
-  "Cooking",
-  "Photography",
-  "Music",
-  "Video Editing",
-  "Public Speaking",
-  "Leadership",
-  "UI/UX",
-  "Animation",
-  "Game Dev",
-  "AI",
-  "Data Science",
-  "Fitness",
-  "Nutrition",
-  "Languages",
-  "Entrepreneurship",
+  'Design',
+  'Creativity',
+  'Tech',
+  'Math',
+  'Marketing',
+  'Finance',
+  'Fine Art',
+  'Writing',
+  'Sales',
+  'Teaching',
+  'Coding',
+  'Research',
+  'Fashion',
+  'Hair',
+  'Pottery',
+  'Cooking',
+  'Photography',
+  'Music',
+  'Video Editing',
+  'Public Speaking',
+  'Leadership',
+  'UI/UX',
+  'Animation',
+  'Game Dev',
+  'AI',
+  'Data Science',
+  'Fitness',
+  'Nutrition',
+  'Languages',
+  'Entrepreneurship',
 ];
 
 export default function EditProfile() {
@@ -50,19 +50,19 @@ export default function EditProfile() {
     reader.readAsDataURL(file);
   };
   const [formData, setFormData] = useState({
-    name: "",
-    bio: "",
-    position: "",
-    instagram: "",
-    facebook: "",
+    name: '',
+    bio: '',
+    position: '',
+    instagram: '',
+    facebook: '',
     interests: [] as string[],
-    profilePicture: "",
+    profilePicture: '',
   });
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:3000/api/profile/me", {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/profile/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -70,17 +70,17 @@ export default function EditProfile() {
 
         const user = response.data;
         setFormData({
-          name: user.name || "",
-          bio: user.bio || "",
-          instagram: user.social?.instagram || "",
-          facebook: user.social?.facebook || "",
+          name: user.name || '',
+          bio: user.bio || '',
+          instagram: user.social?.instagram || '',
+          facebook: user.social?.facebook || '',
           interests: user.interests || [],
-          profilePicture: user.profilePicture || "",
-          position: user.position || "",
+          profilePicture: user.profilePicture || '',
+          position: user.position || '',
         });
       } catch (error) {
-        console.error("Failed to fetch profile:", error);
-        toast.error("Failed to load profile. Please try again.");
+        console.error('Failed to fetch profile:', error);
+        toast.error('Failed to load profile. Please try again.');
       }
     };
     fetchProfile();
@@ -88,10 +88,10 @@ export default function EditProfile() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
       await axios.post(
-        "http://localhost:3000/api/profile/update",
+        `${import.meta.env.VITE_API_URL}/api/profile/update`,
         {
           name: formData.name,
           bio: formData.bio,
@@ -107,14 +107,14 @@ export default function EditProfile() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
-      toast.success("Profile saved!");
-      navigate("/course/profile");
+      toast.success('Profile saved!');
+      navigate('/course/profile');
     } catch (error) {
-      console.error("Failed to save profile:", error);
-      toast.error("Failed to save profile. Please try again.");
+      console.error('Failed to save profile:', error);
+      toast.error('Failed to save profile. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -122,7 +122,7 @@ export default function EditProfile() {
   return (
     <div className="profile-page">
       <div className="screen-header">
-        <button className="back-btn" onClick={() => navigate("/course/profile")}>
+        <button className="back-btn" onClick={() => navigate('/course/profile')}>
           ←
         </button>
         <h2 className="header-title">Edit Profile</h2>
@@ -135,9 +135,14 @@ export default function EditProfile() {
           ) : (
             <div className="avatar-placeholder edit-avatar-circle">👤</div>
           )}
-          <label className="edit-avatar-label" style={{ cursor: "pointer" }}>
+          <label className="edit-avatar-label" style={{ cursor: 'pointer' }}>
             Upload Profile Image
-            <input type="file" accept="image/*" style={{ display: "none" }} onChange={handleImageUpload} />
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleImageUpload}
+            />
           </label>
         </div>
 
@@ -199,18 +204,18 @@ export default function EditProfile() {
         <div className="input-group">
           <label className="input-label">Choose Interests</label>
           <div
-          className="interests-list"
-          style={{
-            maxHeight: "300px",
-            overflowY: "auto",
-            scrollbarWidth: "thin",
-            scrollbarColor: "var(--primary-purple) transparent"
-          }}
+            className="interests-list"
+            style={{
+              maxHeight: '300px',
+              overflowY: 'auto',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'var(--primary-purple) transparent',
+            }}
           >
             {INTERESTS.map((interest) => (
               <span
                 key={interest}
-                className={`interest-tag ${formData.interests.includes(interest) ? "interest-tag--selected" : ""}`}
+                className={`interest-tag ${formData.interests.includes(interest) ? 'interest-tag--selected' : ''}`}
                 onClick={() => {
                   const already = formData.interests.includes(interest);
                   setFormData({
@@ -228,8 +233,13 @@ export default function EditProfile() {
         </div>
       </div>
 
-      <button className="primary-button" style={{ marginTop: "20px" }} onClick={handleSave} disabled={isSaving}>
-        {isSaving ? "Saving..." : "Save"}
+      <button
+        className="primary-button"
+        style={{ marginTop: '20px' }}
+        onClick={handleSave}
+        disabled={isSaving}
+      >
+        {isSaving ? 'Saving...' : 'Save'}
       </button>
     </div>
   );

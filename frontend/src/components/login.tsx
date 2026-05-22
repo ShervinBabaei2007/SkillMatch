@@ -21,7 +21,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/login', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -174,18 +174,11 @@ function Login() {
               marginTop: '20px',
             }}
           >
-            <button
-              type="submit"
-              className="white-button"
-            >
+            <button type="submit" className="white-button">
               Login
             </button>
 
-            <button
-              type="button"
-              className="white-button"
-              onClick={() => navigate('/signup')}
-            >
+            <button type="button" className="white-button" onClick={() => navigate('/signup')}>
               Create Account
             </button>
           </div>

@@ -42,7 +42,7 @@ function Signup() {
     localStorage.removeItem('user');
 
     try {
-      const res = await fetch('http://localhost:3000/api/auth/signup', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -268,32 +268,25 @@ function Signup() {
               marginTop: '20px',
             }}
           >
-            <button
-              type="submit"
-              className="white-button"
-            >
+            <button type="submit" className="white-button">
               Sign Up
             </button>
 
-            <button
-              type="button"
-              className="white-button"
-              onClick={() => navigate('/login')}
-            >
+            <button type="button" className="white-button" onClick={() => navigate('/login')}>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  lineHeight: "1.4",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  lineHeight: '1.4',
                 }}
               >
                 <span>Already have an account?</span>
 
                 <span
                   style={{
-                    fontWeight: "400",
-                    color: "var(--coconut-milk)",
+                    fontWeight: '400',
+                    color: 'var(--coconut-milk)',
                   }}
                 >
                   Login Here

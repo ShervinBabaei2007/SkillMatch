@@ -58,7 +58,7 @@ const PaymentDetails: React.FC = () => {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/course', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/course`, {
         name: state.registration.name,
         email: state.registration.email,
         age: state.registration.age,

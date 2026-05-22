@@ -56,10 +56,10 @@ export default function Profile() {
 
       try {
         const [profileRes, workshopsRes] = await Promise.all([
-          axios.get('http://localhost:3000/api/profile/me', {
+          axios.get(`${import.meta.env.VITE_API_URL}/api/profile/me`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get('http://localhost:3000/api/workshops/mine', {
+          axios.get(`${import.meta.env.VITE_API_URL}/api/workshops/mine`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -99,13 +99,13 @@ export default function Profile() {
           setNotLoggedIn(true);
           return;
         }
-        const res = await axios.get('http://localhost:3000/api/workshops/attending', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/workshops/attending`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRegisteredWorkshops(res.data);
       } catch (error) {
         console.error('Failed to fetch registered workshops:', error);
-        toast.error("Failed to fetch registred workshops. Please try again!")
+        toast.error('Failed to fetch registred workshops. Please try again!');
       }
     };
     fetchRegistered();
@@ -115,7 +115,7 @@ export default function Profile() {
     if (!confirm('Are you sure you want to delete this workshop?')) return;
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3000/api/workshops/${workshopId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/workshops/${workshopId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setHostedWorkshops((prev) => prev.filter((w) => w._id !== workshopId));

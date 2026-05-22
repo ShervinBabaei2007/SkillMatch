@@ -118,7 +118,7 @@ const HostWorkshopForm: React.FC = () => {
     formPayload.append('image', file);
 
     try {
-      const response = await fetch('http://localhost:5000/api/media/upload', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/media/upload`, {
         method: 'POST',
         body: formPayload,
       });
@@ -565,7 +565,6 @@ const HostWorkshopForm: React.FC = () => {
           View Preview
         </button>
       </form>
-
     </div>
   );
 };
