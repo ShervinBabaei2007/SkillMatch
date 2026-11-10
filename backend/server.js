@@ -19,36 +19,40 @@ console.log("Profile:", typeof profileRoute);
 console.log("Register:", typeof registerCourseRoute);
 console.log("Workshops:", typeof workshopRoutes);
 
+// Serverless-safe: connect lazily and reuse the connection across requests
+let connectionPromise;
+function connectDB() {
+  if (!connectionPromise) {
+    connectionPromise = mongoose
+      .connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
+      .then(() => console.log("✅ Connected to MongoDB Atlas"))
+      .catch((err) => {
+        connectionPromise = undefined;
+        throw err;
+      });
+  }
+  return connectionPromise;
+}
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("❌ MongoDB connection failed:", err);
+    res.status(500).json({ message: "Database connection failed" });
+  }
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoute);
 app.use("/api/course", registerCourseRoute);
 app.use("/api/workshops", workshopRoutes);
 app.get("/", (req, res) => res.send("Hello World!"));
 
-async function startServer() {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000,
-    });
-    console.log("✅ Connected to MongoDB Atlas");
-
-    setInterval(
-      async () => {
-        try {
-          await mongoose.connection.db.admin().ping();
-          console.log("DB keepalive ping");
-        } catch (err) {
-          console.error("Keepalive ping failed:", err);
-        }
-      },
-      5 * 60 * 1000,
-    );
-
-    app.listen(PORT, () => console.log(`🚀 App listening at http://localhost:${PORT}`));
-  } catch (err) {
-    console.error("❌ MongoDB connection failed:", err);
-    process.exit(1);
-  }
+// Local dev: run directly. On Vercel, the exported app is used instead.
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`🚀 App listening at http://localhost:${PORT}`));
 }
 
-startServer();
+module.exports = app;
